@@ -1,33 +1,39 @@
 import sys
 import os
+import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from backend.models.sintonia import sintonizar_chr, sintonizar_cc, validar_estabilidade, sintonizar_manual
 
-k, tau, theta = 2.0, 10.0, 3.0
+K_REF = 2.0
+TAU_REF = 10.0
+THETA_REF = 3.0
 
-chr_result = sintonizar_chr(k, tau, theta)
-cc_result = sintonizar_cc(k, tau, theta)
+def test_sintonizar_chr():
+    chr_result = sintonizar_chr(K_REF, TAU_REF, THETA_REF)
+    assert abs(chr_result['Kp'] - 1.0) < 0.05, "Kp de CHR fora do esperado"
+    assert chr_result['Ti'] == 10.0, "Ti de CHR fora do esperado"
+    assert chr_result['Td'] == 1.5, "Td de CHR fora do esperado"
 
-print("=== CHR (problema servo, sem sobrevalor) ===")
-print(f"Kp={chr_result['Kp']}  (esperado ~= 1.0)")
-print(f"Ti={chr_result['Ti']}  (esperado = 10.0)")
-print(f"Td={chr_result['Td']}  (esperado = 1.5)")
+def test_sintonizar_cc():
+    cc_result = sintonizar_cc(K_REF, TAU_REF, THETA_REF)
+    # Valores de referência baseados na execução correta
+    assert abs(cc_result['Kp'] - 2.3472) < 0.01, "Kp de Cohen-Coon fora do esperado"
+    assert abs(cc_result['Ti'] - 6.5844) < 0.01, "Ti de Cohen-Coon fora do esperado"
+    assert abs(cc_result['Td'] - 1.0345) < 0.01, "Td de Cohen-Coon fora do esperado"
 
-print("\n=== Cohen-Coon ===")
-print(f"Kp={cc_result['Kp']}")
-print(f"Ti={cc_result['Ti']}")
-print(f"Td={cc_result['Td']}")
+def test_validar_estabilidade_sistema_estavel():
+    chr_result = sintonizar_chr(K_REF, TAU_REF, THETA_REF)
+    estavel, msg = validar_estabilidade(K_REF, TAU_REF, THETA_REF, chr_result['Kp'], chr_result['Ti'], chr_result['Td'])
+    assert estavel is True, "O sistema CHR deveria ser estável"
 
-print("\n=== Validação de Estabilidade (parâmetros CHR) ===")
-estavel, msg = validar_estabilidade(k, tau, theta, chr_result['Kp'], chr_result['Ti'], chr_result['Td'])
-print(f"Estável: {estavel} — {msg}")
+def test_validar_estabilidade_sistema_instavel():
+    estavel, msg = validar_estabilidade(K_REF, TAU_REF, THETA_REF, 100.0, 0.01, 50.0)
+    assert estavel is False, "O sistema com Kp extremo deveria ser instável"
 
-print("\n=== Validação de Estabilidade (PID instável) ===")
-estavel_inst, msg_inst = validar_estabilidade(k, tau, theta, 100.0, 0.01, 50.0)
-print(f"Estável: {estavel_inst} — {msg_inst}")
-
-print("\n=== sintonizar_manual ===")
-manual = sintonizar_manual(1.5, 8.0, 0.5)
-print(f"Kp={manual['Kp']}, Ti={manual['Ti']}, Td={manual['Td']}")
+def test_sintonizar_manual():
+    manual = sintonizar_manual(1.5, 8.0, 0.5)
+    assert manual['Kp'] == 1.5
+    assert manual['Ti'] == 8.0
+    assert manual['Td'] == 0.5
