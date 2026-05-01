@@ -1,4 +1,5 @@
 import numpy as np
+import control
 from scipy.interpolate import interp1d
 
 
@@ -37,3 +38,15 @@ def identificar_sistemas(t, y, u):
         'smith': res_smith,
         'sundaresan': res_sund,
     }
+
+
+def simular_fopdt(t, k, tau, theta, delta_u, y0):
+    num_p, den_p = control.pade(max(theta, 1e-6), 20)
+    G_delay = control.tf(num_p, den_p)
+    G_planta = control.tf([k], [tau, 1])
+    G = control.series(G_planta, G_delay)
+
+    t_sim, y_sim = control.step_response(G, T=t)
+    y_sim = y0 + y_sim * delta_u
+
+    return t_sim, y_sim
