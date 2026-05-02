@@ -19,7 +19,34 @@ def simular_malha_fechada(k, tau, theta, Kp, Ti, Td, setpoint=1.0, t_final=None)
 
     t_sim, y_sim = control.step_response(T * setpoint, T=t)
 
+    metricas = calcular_metricas(t_sim, y_sim, setpoint)
+
     return {
         't': list(t_sim),
         'y': list(y_sim),
+        **metricas,
+    }
+
+
+def calcular_metricas(t, y, setpoint):
+    sp = setpoint
+
+    idx_tr = np.where(y >= 0.9 * sp)[0]
+    tr = float(t[idx_tr[0]]) if len(idx_tr) > 0 else float('inf')
+
+    banda_superior = sp * 1.02
+    banda_inferior = sp * 0.98
+    fora_da_banda = np.where((y > banda_superior) | (y < banda_inferior))[0]
+    ts = float(t[fora_da_banda[-1]]) if len(fora_da_banda) > 0 else 0.0
+
+    y_max = np.max(y)
+    Mp = float((y_max - sp) / sp * 100) if y_max > sp else 0.0
+
+    ess = float(abs(sp - y[-1]))
+
+    return {
+        'tr': round(tr, 4),
+        'ts': round(ts, 4),
+        'Mp': round(Mp, 4),
+        'ess': round(ess, 6),
     }
