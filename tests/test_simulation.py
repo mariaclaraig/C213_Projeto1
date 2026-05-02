@@ -4,7 +4,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from backend.models.sintonia import sintonizar_chr
+from backend.models.sintonia import sintonizar_chr, sintonizar_cc
 from backend.utils.simulation import simular_malha_fechada
 
 K_REF = 2.0
@@ -70,3 +70,16 @@ def test_tempo_subida_finito():
     )
     assert resultado['tr'] < float('inf'), "Tempo de subida deveria ser finito"
     assert resultado['tr'] > 0, "Tempo de subida deveria ser positivo"
+
+
+def test_simulacao_cohen_coon_sucesso():
+    params = sintonizar_cc(K_REF, TAU_REF, THETA_REF)
+    resultado = simular_malha_fechada(
+        K_REF, TAU_REF, THETA_REF,
+        params['Kp'], params['Ti'], params['Td'],
+        setpoint=1.0,
+    )
+    assert 't' in resultado
+    assert 'y' in resultado
+    assert resultado['ess'] < 0.05, f"Erro em regime permanente alto para CC: {resultado['ess']:.6f}"
+    assert resultado['tr'] > 0, "Tempo de subida CC deveria ser positivo"
