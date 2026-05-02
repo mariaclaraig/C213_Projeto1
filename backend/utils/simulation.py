@@ -37,7 +37,11 @@ def calcular_metricas(t, y, setpoint):
     banda_superior = sp * 1.02
     banda_inferior = sp * 0.98
     fora_da_banda = np.where((y > banda_superior) | (y < banda_inferior))[0]
-    ts = float(t[fora_da_banda[-1]]) if len(fora_da_banda) > 0 else 0.0
+    if len(fora_da_banda) > 0:
+        idx_ts = min(fora_da_banda[-1] + 1, len(t) - 1)
+        ts = float(t[idx_ts])
+    else:
+        ts = 0.0
 
     y_max = np.max(y)
     Mp = float((y_max - sp) / sp * 100) if y_max > sp else 0.0
