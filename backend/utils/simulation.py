@@ -3,6 +3,32 @@ import control
 
 
 def simular_malha_fechada(k, tau, theta, Kp, Ti, Td, setpoint=1.0, t_final=None):
+    """
+    Simula resposta do sistema em malha fechada com controlador PID.
+
+    Constrói a planta FOPDT com atraso aproximado por Padé de ordem 20,
+    o controlador PID no formato paralelo e calcula a resposta ao degrau
+    do sistema realimentado.
+
+    Parâmetros:
+        k       (float): ganho estático do processo
+        tau     (float): constante de tempo [s]
+        theta   (float): tempo morto [s]
+        Kp      (float): ganho proporcional do PID
+        Ti      (float): tempo integral do PID [s]
+        Td      (float): tempo derivativo do PID [s]
+        setpoint (float): amplitude do degrau de referência (padrão: 1.0)
+        t_final  (float): duração da simulação em segundos (auto se None)
+
+    Retorna:
+        dict com chaves:
+            't'   (list[float]): vetor de tempo da simulação
+            'y'   (list[float]): vetor de saída do sistema
+            'tr'  (float): tempo de subida [s]
+            'ts'  (float): tempo de acomodação [s]
+            'Mp'  (float): sobressinal percentual [%]
+            'ess' (float): erro em regime permanente
+    """
     if t_final is None:
         t_final = 10 * (tau + theta)
 
@@ -29,6 +55,21 @@ def simular_malha_fechada(k, tau, theta, Kp, Ti, Td, setpoint=1.0, t_final=None)
 
 
 def calcular_metricas(t, y, setpoint):
+    """
+    Calcula métricas de desempenho a partir da resposta ao degrau.
+
+    Parâmetros:
+        t        (np.ndarray): vetor de tempo [s]
+        y        (np.ndarray): vetor de saída do sistema
+        setpoint (float): valor de referência do degrau
+
+    Retorna:
+        dict com chaves:
+            'tr'  (float): tempo para atingir 90% do setpoint pela primeira vez
+            'ts'  (float): tempo para permanecer dentro da banda ±2% do setpoint
+            'Mp'  (float): sobressinal percentual em relação ao setpoint
+            'ess' (float): erro em regime permanente |setpoint - y_final|
+    """
     sp = setpoint
 
     idx_tr = np.where(y >= 0.9 * sp)[0]
