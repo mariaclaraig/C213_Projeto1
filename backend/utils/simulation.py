@@ -1,1 +1,97 @@
-# simulation.py — Owner: Christian
+import numpy as np
+import control
+
+
+def simular_malha_fechada(k, tau, theta, Kp, Ti, Td, setpoint=1.0, t_final=None):
+    """
+    Simula resposta do sistema em malha fechada com controlador PID.
+
+    Constrói a planta FOPDT com atraso aproximado por Padé de ordem 20,
+    o controlador PID no formato paralelo e calcula a resposta ao degrau
+    do sistema realimentado.
+
+    Parâmetros:
+        k       (float): ganho estático do processo
+        tau     (float): constante de tempo [s]
+        theta   (float): tempo morto [s]
+        Kp      (float): ganho proporcional do PID
+        Ti      (float): tempo integral do PID [s]
+        Td      (float): tempo derivativo do PID [s]
+        setpoint (float): amplitude do degrau de referência (padrão: 1.0)
+        t_final  (float): duração da simulação em segundos (auto se None)
+
+    Retorna:
+        dict com chaves:
+            't'   (list[float]): vetor de tempo da simulação
+            'y'   (list[float]): vetor de saída do sistema
+            'tr'  (float): tempo de subida [s]
+            'ts'  (float): tempo de acomodação [s]
+            'Mp'  (float): sobressinal percentual [%]
+            'ess' (float): erro em regime permanente
+    """
+    if t_final is None:
+        t_final = 10 * (tau + theta)
+
+    t = np.linspace(0, t_final, 1000)
+
+    num_p, den_p = control.pade(max(theta, 1e-6), 20)
+    G_delay = control.tf(num_p, den_p)
+    G_planta = control.tf([k], [tau, 1])
+    G = control.series(G_planta, G_delay)
+
+    C = control.tf([Kp * Td, Kp, Kp / Ti], [1, 0])
+
+    T = control.feedback(control.series(C, G), 1)
+
+    t_sim, y_sim = control.step_response(T * setpoint, T=t)
+
+    metricas = calcular_metricas(t_sim, y_sim, setpoint)
+
+    return {
+        't': list(t_sim),
+        'y': list(y_sim),
+        **metricas,
+    }
+
+
+def calcular_metricas(t, y, setpoint):
+    """
+    Calcula métricas de desempenho a partir da resposta ao degrau.
+
+    Parâmetros:
+        t        (np.ndarray): vetor de tempo [s]
+        y        (np.ndarray): vetor de saída do sistema
+        setpoint (float): valor de referência do degrau
+
+    Retorna:
+        dict com chaves:
+            'tr'  (float): tempo para atingir 90% do setpoint pela primeira vez
+            'ts'  (float): tempo para permanecer dentro da banda ±2% do setpoint
+            'Mp'  (float): sobressinal percentual em relação ao setpoint
+            'ess' (float): erro em regime permanente |setpoint - y_final|
+    """
+    sp = setpoint
+
+    idx_tr = np.where(y >= 0.9 * sp)[0]
+    tr = float(t[idx_tr[0]]) if len(idx_tr) > 0 else float('inf')
+
+    banda_superior = sp * 1.02
+    banda_inferior = sp * 0.98
+    fora_da_banda = np.where((y > banda_superior) | (y < banda_inferior))[0]
+    if len(fora_da_banda) > 0:
+        idx_ts = min(fora_da_banda[-1] + 1, len(t) - 1)
+        ts = float(t[idx_ts])
+    else:
+        ts = 0.0
+
+    y_max = np.max(y)
+    Mp = float((y_max - sp) / sp * 100) if y_max > sp else 0.0
+
+    ess = float(abs(sp - y[-1]))
+
+    return {
+        'tr': round(tr, 4),
+        'ts': round(ts, 4),
+        'Mp': round(Mp, 4),
+        'ess': round(ess, 6),
+    }
