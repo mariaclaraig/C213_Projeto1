@@ -47,7 +47,7 @@ def carregar_mat(caminho_arquivo):
 
 
 def _encontrar_vetor(dados, candidatos, nome_legivel):
-    """Procura um vetor no dict de dados usando lista de nomes candidatos."""
+
     for chave in candidatos:
         if chave in dados:
             vetor = np.array(dados[chave]).flatten()
@@ -61,7 +61,7 @@ def _encontrar_vetor(dados, candidatos, nome_legivel):
 
 
 def _extrair_metadata(dados, candidatos, padrao):
-    """Extrai string de metadado ou retorna valor padrão."""
+
     for chave in candidatos:
         if chave in dados:
             val = dados[chave]
