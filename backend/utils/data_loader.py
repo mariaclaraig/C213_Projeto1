@@ -1,8 +1,8 @@
 import numpy as np
 from scipy.io import loadmat
 
-CHAVES_TEMPO   = ['t', 'time', 'tempo', 'T']
-CHAVES_SAIDA   = ['y', 'output', 'saida', 'Y', 'out']
+CHAVES_TEMPO   = ['t', 'time', 'tempo', 'tiempo', 'T']
+CHAVES_SAIDA   = ['y', 'output', 'saida', 'salida', 'Y', 'out']
 CHAVES_ENTRADA = ['u', 'input', 'entrada', 'U', 'in_']
 
 def carregar_mat(caminho_arquivo):
