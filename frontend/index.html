@@ -1,1 +1,55 @@
-<!-- index.html — Owner: Samuel -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C213 - Controle PID | Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="bg-animated" aria-hidden="true"></div>
+    <div class="bg-orb orb-left" aria-hidden="true"></div>
+    <div class="bg-orb orb-right" aria-hidden="true"></div>
+
+    <main class="login-shell">
+        <section class="login-container" id="loginCard" aria-labelledby="titulo-login">
+            <div class="login-header">
+                <div class="logo" aria-hidden="true">PID</div>
+                <p class="eyebrow">Grupo 06 | CHR + Cohen-Coon</p>
+                <h1 id="titulo-login">Controle PID com identificacao inteligente</h1>
+                <p class="subtitle">
+                    Acesse o painel para analisar o processo, comparar modelos e visualizar a resposta do controlador.
+                </p>
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="input-group">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" name="usuario" placeholder="grupo6" autocomplete="username">
+                </div>
+
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Digite sua senha" autocomplete="current-password">
+                </div>
+
+                <div class="login-meta">
+                    <span class="hint">Credenciais locais para demonstracao</span>
+                    <span class="hint-strong">grupo6 / c213</span>
+                </div>
+
+                <div class="error-msg" id="errorMsg" role="alert" aria-live="polite"></div>
+
+                <button type="submit" class="btn-login" id="loginButton">
+                    <span>Entrar no dashboard</span>
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/login.js"></script>
+</body>
+</html>
