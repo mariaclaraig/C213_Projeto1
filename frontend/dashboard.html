@@ -1,1 +1,201 @@
-<!-- dashboard.html — Owner: Samuel -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C213 - Dashboard PID</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-bg" aria-hidden="true"></div>
+    <div class="dashboard-orb orb-top" aria-hidden="true"></div>
+    <div class="dashboard-orb orb-bottom" aria-hidden="true"></div>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <a class="sidebar-back" href="index.html">Voltar</a>
+                <div class="sidebar-logo">C213</div>
+                <div class="sidebar-title">
+                    <h1>Controle PID</h1>
+                    <p>Grupo 06 | CHR + Cohen-Coon</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Navegacao principal">
+                <button class="nav-btn active" type="button" data-section="identificacao" onclick="mostrarSecao('identificacao')">
+                    <span class="nav-icon">01</span>
+                    <span class="nav-copy">
+                        <strong>Identificacao</strong>
+                        <small>Modelo experimental e comparacao</small>
+                    </span>
+                </button>
+                <button class="nav-btn" type="button" data-section="controle" onclick="mostrarSecao('controle')">
+                    <span class="nav-icon">02</span>
+                    <span class="nav-copy">
+                        <strong>Controle PID</strong>
+                        <small>Sintonia, resposta e metricas</small>
+                    </span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>Painel visual preparado para integracao com identificacao, sintonia e simulacao.</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <section id="sec-identificacao" class="secao">
+                <div class="section-header">
+                    <div>
+                        <span class="section-kicker">Etapa 1</span>
+                        <h2>Identificacao do Sistema</h2>
+                    </div>
+                    <p>Carregue o arquivo do processo e visualize a comparacao entre a resposta experimental e o modelo FOPDT.</p>
+                </div>
+
+                <div class="card upload-card">
+                    <div class="upload-main">
+                        <label class="btn-upload" for="inputMat">Escolher arquivo .mat</label>
+                        <input type="file" id="inputMat" accept=".mat" hidden>
+                        <div class="upload-copy">
+                            <span id="nomeArquivo" class="nome-arquivo">Nenhum arquivo selecionado</span>
+                            <small>Dataset experimental do processo em malha aberta.</small>
+                        </div>
+                    </div>
+                    <button class="btn-action" id="btnIdentificar" disabled>Identificar</button>
+                </div>
+
+                <div class="metodo-seletor hidden" id="seletorIdentificacao">
+                    <div class="selector-copy">
+                        <label for="selectMetodoId">Visualizar metodo</label>
+                        <select id="selectMetodoId">
+                            <option value="smith">Smith</option>
+                            <option value="sundaresan">Sundaresan</option>
+                        </select>
+                    </div>
+                    <span id="badgeRecomendado" class="badge-recomendado">Recomendado</span>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Resposta experimental vs modelo</h3>
+                        <span>Plotly.js</span>
+                    </div>
+                    <div id="graficoIdentificacao" class="grafico-container"></div>
+                </div>
+
+                <div class="metricas-grid">
+                    <div class="metrica-card">
+                        <span class="label">k</span>
+                        <span class="valor" id="val-k">-</span>
+                        <span class="descricao">Ganho estatico</span>
+                    </div>
+                    <div class="metrica-card">
+                        <span class="label">tau</span>
+                        <span class="valor" id="val-tau">-</span>
+                        <span class="descricao">Constante de tempo</span>
+                    </div>
+                    <div class="metrica-card">
+                        <span class="label">theta</span>
+                        <span class="valor" id="val-theta">-</span>
+                        <span class="descricao">Tempo morto</span>
+                    </div>
+                    <div class="metrica-card">
+                        <span class="label" id="label-eqm">EQM</span>
+                        <span class="valor" id="val-eqm">-</span>
+                        <span class="descricao">Erro quadratico medio</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-controle" class="secao hidden">
+                <div class="section-header">
+                    <div>
+                        <span class="section-kicker">Etapa 2</span>
+                        <h2>Controle PID</h2>
+                    </div>
+                    <p>Selecione a estrategia de sintonia, ajuste os parametros e acompanhe o desempenho da malha fechada.</p>
+                </div>
+
+                <div class="card controle-card">
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="selectMetodo">Metodo</label>
+                            <select id="selectMetodo">
+                                <option value="CHR">CHR (sem sobresinal)</option>
+                                <option value="CC">Cohen-Coon</option>
+                                <option value="Manual">Manual</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="inputSetpoint">SetPoint</label>
+                            <input type="number" id="inputSetpoint" value="1.0" step="0.1">
+                        </div>
+
+                        <div class="field action-field">
+                            <label>&nbsp;</label>
+                            <button class="btn-action" id="btnSimular">Sintonizar e Simular</button>
+                        </div>
+                    </div>
+
+                    <div class="pid-fields">
+                        <div class="field">
+                            <label for="campo-Kp">Kp</label>
+                            <input type="number" id="campo-Kp" readonly>
+                        </div>
+                        <div class="field">
+                            <label for="campo-Ti">Ti</label>
+                            <input type="number" id="campo-Ti" readonly>
+                        </div>
+                        <div class="field">
+                            <label for="campo-Td">Td</label>
+                            <input type="number" id="campo-Td" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Resposta da malha fechada</h3>
+                        <span>SetPoint e saida</span>
+                    </div>
+                    <div id="graficoMalhaFechada" class="grafico-container"></div>
+                </div>
+
+                <div class="metricas-grid">
+                    <div class="metrica-card verde">
+                        <span class="label">tr</span>
+                        <span class="valor" id="val-tr">-</span>
+                        <span class="descricao">Tempo de subida</span>
+                    </div>
+                    <div class="metrica-card azul">
+                        <span class="label">ts</span>
+                        <span class="valor" id="val-ts">-</span>
+                        <span class="descricao">Tempo de acomodacao</span>
+                    </div>
+                    <div class="metrica-card laranja">
+                        <span class="label">Mp</span>
+                        <span class="valor" id="val-mp">-</span>
+                        <span class="descricao">Sobresinal percentual</span>
+                    </div>
+                    <div class="metrica-card roxo">
+                        <span class="label">ess</span>
+                        <span class="valor" id="val-ess">-</span>
+                        <span class="descricao">Erro estacionario</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
