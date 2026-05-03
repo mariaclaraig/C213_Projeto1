@@ -1,0 +1,39 @@
+const loginForm = document.getElementById("loginForm");
+const loginCard = document.getElementById("loginCard");
+const usuarioInput = document.getElementById("usuario");
+const senhaInput = document.getElementById("senha");
+const errorMsg = document.getElementById("errorMsg");
+const loginButton = document.getElementById("loginButton");
+
+const CREDENCIAIS = {
+    usuario: "grupo6",
+    senha: "c213",
+};
+
+loginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const usuario = usuarioInput.value.trim();
+    const senha = senhaInput.value.trim();
+
+    if (usuario === CREDENCIAIS.usuario && senha === CREDENCIAIS.senha) {
+        errorMsg.textContent = "";
+        loginButton.disabled = true;
+        loginButton.querySelector("span").textContent = "Entrando...";
+        loginCard.classList.add("is-leaving");
+
+        window.setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 400);
+
+        return;
+    }
+
+    errorMsg.textContent = "Usuario ou senha incorretos.";
+    senhaInput.value = "";
+    senhaInput.focus();
+});
+
+window.addEventListener("load", () => {
+    usuarioInput.focus();
+});
