@@ -85,7 +85,7 @@ function atualizarGraficoIdentificacao() {
         plotarVazio(
             "graficoIdentificacao",
             "Identificacao do Sistema",
-            "Carregue um arquivo e execute a identificacao para visualizar o modelo."
+            "Carregue um arquivo e execute a identificação para visualizar o modelo."
         );
         return;
     }
@@ -195,7 +195,7 @@ function inicializarGraficos() {
     plotarVazio(
         "graficoMalhaFechada",
         "Resposta em Malha Fechada",
-        "Execute a sintonia PID para visualizar a simulacao do sistema."
+        "Execute a sintonia PID para visualizar a simulação do sistema."
     );
 }
 
@@ -241,7 +241,7 @@ async function executarSintoniaESimulacao() {
     const resultadoMetodo = obterResultadoMetodo();
 
     if (!resultadoMetodo) {
-        throw new Error("Execute a identificacao antes de simular o controlador.");
+        throw new Error("Execute a identificação antes de simular o controlador.");
     }
 
     const metodo = document.getElementById("selectMetodo")?.value || "CHR";
@@ -249,7 +249,7 @@ async function executarSintoniaESimulacao() {
     const btnSimular = document.getElementById("btnSimular");
 
     if (!Number.isFinite(setpoint)) {
-        throw new Error("Informe um valor valido para o setpoint.");
+        throw new Error("Informe um valor válido para o setpoint.");
     }
 
     if (btnSimular) {
@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectMetodo = document.getElementById("selectMetodo");
     const btnSimular = document.getElementById("btnSimular");
 
-    mostrarSecao("identificacao");
+    mostrarSecao("identificao");
     atualizarEstadoCamposPid();
     atualizarMetricasControle(null);
     inicializarGraficos();

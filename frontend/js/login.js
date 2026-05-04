@@ -37,7 +37,7 @@ loginForm.addEventListener("submit", (event) => {
         return;
     }
 
-    errorMsg.textContent = "Usuario ou senha incorretos.";
+    errorMsg.textContent = "Usuário ou senha incorretos.";
     senhaInput.value = "";
     senhaInput.focus();
 });
