@@ -52,7 +52,7 @@ function plotarIdentificacao(t, yExp, tModelo, yModelo, unidadeY, grandezaY, nom
 
     const layout = {
         ...layoutBase,
-        title: `Identificacao - Metodo de ${nomeMetodo}`,
+        title: `Identificação - Método de ${nomeMetodo}`,
         xaxis: { ...layoutBase.xaxis, title: "Tempo (s)" },
         yaxis: { ...layoutBase.yaxis, title: `${grandezaY} (${unidadeY})` },
     };
@@ -71,7 +71,7 @@ function plotarMalhaFechada(t, y, setpoint, tr, ts) {
     const resposta = {
         x: t,
         y: y,
-        name: "Saida controlada",
+        name: "Saída controlada",
         line: { color: "#06d6a0", width: 2.5 },
     };
 
@@ -104,7 +104,7 @@ function plotarMalhaFechada(t, y, setpoint, tr, ts) {
         ...layoutBase,
         title: "Resposta em Malha Fechada",
         xaxis: { ...layoutBase.xaxis, title: "Tempo (s)" },
-        yaxis: { ...layoutBase.yaxis, title: "Saida" },
+        yaxis: { ...layoutBase.yaxis, title: "Saída" },
         shapes,
     };
 
