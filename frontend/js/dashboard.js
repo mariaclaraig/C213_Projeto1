@@ -232,7 +232,7 @@ async function executarIdentificacao() {
     } finally {
         if (btnIdentificar) {
             btnIdentificar.disabled = false;
-            btnIdentificar.textContent = "Identificacao";
+            btnIdentificar.textContent = "Identificação";
         }
     }
 }
