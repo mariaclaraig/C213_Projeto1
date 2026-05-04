@@ -22,7 +22,7 @@
                 <div class="sidebar-logo">C213</div>
                 <div class="sidebar-title">
                     <h1>Projeto Pratico C213 - Sistemas Embarcados</h1>
-                    <p>Identificacao de Processos &amp; Sintonia de Controladores PID</p>
+                    <p>Identificação de Processos &amp; Sintonia de Controladores PID</p>
                 </div>
             </div>
 
@@ -30,21 +30,21 @@
                 <button class="nav-btn active" type="button" data-section="identificacao" onclick="mostrarSecao('identificacao')">
                     <span class="nav-icon">01</span>
                     <span class="nav-copy">
-                        <strong>Identificacao</strong>
-                        <small>Dados do sistema e comparacao</small>
+                        <strong>Identificação</strong>
+                        <small>Dados do sistema e comparação</small>
                     </span>
                 </button>
                 <button class="nav-btn" type="button" data-section="controle" onclick="mostrarSecao('controle')">
                     <span class="nav-icon">02</span>
                     <span class="nav-copy">
                         <strong>Controle PID</strong>
-                        <small>Resposta, sintonia e metricas</small>
+                        <small>Resposta, sintonia e métricas</small>
                     </span>
                 </button>
             </nav>
 
             <div class="sidebar-footer">
-                <p>Painel visual do projeto pratico para identificacao de processos e sintonia de controladores PID.</p>
+                <p>Painel visual do projeto prático para identificação de processos e sintonia de controladores PID.</p>
             </div>
         </aside>
 
@@ -52,10 +52,10 @@
             <section id="sec-identificacao" class="secao">
                 <div class="section-header">
                     <div>
-                        <span class="section-kicker">Identificacao</span>
-                        <h2>Dados de Identificacao do Sistema</h2>
+                        <span class="section-kicker">Identificação</span>
+                        <h2>Dados de Identificação do Sistema</h2>
                     </div>
-                    <p>Selecione um dataset e visualize a comparacao entre a resposta experimental do processo e o modelo FOPDT identificado.</p>
+                    <p>Selecione um dataset e visualize a comparação entre a resposta experimental do processo e o modelo FOPDT identificado.</p>
                 </div>
 
                 <div class="card upload-card">
@@ -64,15 +64,15 @@
                         <input type="file" id="inputMat" accept=".mat" hidden>
                         <div class="upload-copy">
                             <span id="nomeArquivo" class="nome-arquivo">Nenhum arquivo selecionado</span>
-                            <small>Selecione um dataset para iniciar a identificacao.</small>
+                            <small>Selecione um dataset para iniciar a identificação.</small>
                         </div>
                     </div>
-                    <button class="btn-action" id="btnIdentificar" disabled>Identificacao</button>
+                    <button class="btn-action" id="btnIdentificar" disabled>Identificação</button>
                 </div>
 
                 <div class="metodo-seletor hidden" id="seletorIdentificacao">
                     <div class="selector-copy">
-                        <label for="selectMetodoId">Metodo de identificacao</label>
+                        <label for="selectMetodoId">Metodo de identificação</label>
                         <select id="selectMetodoId">
                             <option value="smith">Smith</option>
                             <option value="sundaresan">Sundaresan</option>
@@ -83,7 +83,7 @@
 
                 <div class="chart-card">
                     <div class="chart-header">
-                        <h3>Resposta da Identificacao</h3>
+                        <h3>Resposta da Identificação</h3>
                         <span>Plotly.js</span>
                     </div>
                     <div id="graficoIdentificacao" class="grafico-container"></div>
@@ -108,7 +108,7 @@
                     <div class="metrica-card">
                         <span class="label" id="label-eqm">E<sub>s</sub></span>
                         <span class="valor" id="val-eqm">-</span>
-                        <span class="descricao">Erro quadratico medio</span>
+                        <span class="descricao">Erro quadrático médio</span>
                     </div>
                 </div>
             </section>
@@ -119,15 +119,15 @@
                         <span class="section-kicker">Controle PID</span>
                         <h2>Controle PID</h2>
                     </div>
-                    <p>Selecione a sintonia, ajuste os parametros e acompanhe o desempenho da resposta do controle PID.</p>
+                    <p>Selecione a sintonia, ajuste os parâmetros e acompanhe o desempenho da resposta do controle PID.</p>
                 </div>
 
                 <div class="card controle-card">
                     <div class="form-row">
                         <div class="field">
-                            <label for="selectMetodo">Selecao de Sintonia</label>
+                            <label for="selectMetodo">Seleção de Sintonia</label>
                             <select id="selectMetodo">
-                                <option value="CHR">Metodo CHR (sem sobresinal)</option>
+                                <option value="CHR">Método CHR (sem sobresinal)</option>
                                 <option value="CC">Cohen-Coon</option>
                                 <option value="Manual">Manual</option>
                             </select>
@@ -162,8 +162,8 @@
 
                 <div class="chart-card">
                     <div class="chart-header">
-                        <h3>Resposta do Controle PID</h3>
-                        <span>SetPoint e saida do sistema</span>
+                        <h3>Resposta da malha fechada</h3>
+                        <span>SetPoint e saída do sistema</span>
                     </div>
                     <div id="graficoMalhaFechada" class="grafico-container"></div>
                 </div>
@@ -177,7 +177,7 @@
                     <div class="metrica-card azul">
                         <span class="label label-formula">t<sub>s</sub></span>
                         <span class="valor" id="val-ts">-</span>
-                        <span class="descricao">Tempo de acomodacao</span>
+                        <span class="descricao">Tempo de acomodação</span>
                     </div>
                     <div class="metrica-card laranja">
                         <span class="label label-formula">mp<sub></sub></span>
@@ -187,7 +187,7 @@
                     <div class="metrica-card roxo">
                         <span class="label label-formula">e<sub>ss</sub></span>
                         <span class="valor" id="val-ess">-</span>
-                        <span class="descricao">Erro estacionario</span>
+                        <span class="descricao">Erro estacionário</span>
                     </div>
                 </div>
             </section>
