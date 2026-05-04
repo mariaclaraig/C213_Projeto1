@@ -10,6 +10,13 @@ const CREDENCIAIS = {
     senha: "c213",
 };
 
+const CHAVE_AUTENTICACAO = "c213_login_ok";
+
+window.addEventListener("load", () => {
+    sessionStorage.removeItem(CHAVE_AUTENTICACAO);
+    usuarioInput.focus();
+});
+
 loginForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -20,6 +27,7 @@ loginForm.addEventListener("submit", (event) => {
         errorMsg.textContent = "";
         loginButton.disabled = true;
         loginButton.querySelector("span").textContent = "Entrando...";
+        sessionStorage.setItem(CHAVE_AUTENTICACAO, "true");
         loginCard.classList.add("is-leaving");
 
         window.setTimeout(() => {
@@ -32,8 +40,4 @@ loginForm.addEventListener("submit", (event) => {
     errorMsg.textContent = "Usuario ou senha incorretos.";
     senhaInput.value = "";
     senhaInput.focus();
-});
-
-window.addEventListener("load", () => {
-    usuarioInput.focus();
 });

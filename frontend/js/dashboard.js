@@ -6,6 +6,8 @@ const estadoApp = {
     sintonia: null,
 };
 
+const CHAVE_AUTENTICACAO = "c213_login_ok";
+
 function mostrarSecao(secaoAtiva) {
     const secoes = document.querySelectorAll(".secao");
     const botoes = document.querySelectorAll(".nav-btn");
@@ -230,7 +232,7 @@ async function executarIdentificacao() {
     } finally {
         if (btnIdentificar) {
             btnIdentificar.disabled = false;
-            btnIdentificar.textContent = "Identificar";
+            btnIdentificar.textContent = "Identificacao";
         }
     }
 }
@@ -288,12 +290,17 @@ async function executarSintoniaESimulacao() {
     } finally {
         if (btnSimular) {
             btnSimular.disabled = false;
-            btnSimular.textContent = "Sintonizar e Simular";
+            btnSimular.textContent = "Sintonia PID";
         }
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem(CHAVE_AUTENTICACAO) !== "true") {
+        window.location.href = "index.html";
+        return;
+    }
+
     const inputMat = document.getElementById("inputMat");
     const nomeArquivo = document.getElementById("nomeArquivo");
     const btnIdentificar = document.getElementById("btnIdentificar");
