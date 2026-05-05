@@ -25,6 +25,8 @@ def simular_malha_fechada(k, tau, theta, Kp, Ti, Td, setpoint=1.0, t_final=None)
             't'   (list[float]): vetor de tempo da simulação
             'y'   (list[float]): vetor de saída do sistema
             'tr'  (float): tempo de subida [s]
+            'td'  (float): tempo de atraso [s]
+            'tp'  (float): tempo de pico [s]
             'ts'  (float): tempo de acomodação [s]
             'Mp'  (float): sobressinal percentual [%]
             'ess' (float): erro em regime permanente
@@ -66,6 +68,8 @@ def calcular_metricas(t, y, setpoint):
     Retorna:
         dict com chaves:
             'tr'  (float): tempo para atingir 90% do setpoint pela primeira vez
+            'td'  (float): tempo para atingir 50% do setpoint
+            'tp'  (float): tempo de pico (máximo sobressinal)
             'ts'  (float): tempo para permanecer dentro da banda ±2% do setpoint
             'Mp'  (float): sobressinal percentual em relação ao setpoint
             'ess' (float): erro em regime permanente |setpoint - y_final|
@@ -74,6 +78,9 @@ def calcular_metricas(t, y, setpoint):
 
     idx_tr = np.where(y >= 0.9 * sp)[0]
     tr = float(t[idx_tr[0]]) if len(idx_tr) > 0 else float('inf')
+
+    idx_td = np.where(y >= 0.5 * sp)[0]
+    td = float(t[idx_td[0]]) if len(idx_td) > 0 else float('inf')
 
     banda_superior = sp * 1.02
     banda_inferior = sp * 0.98
@@ -87,10 +94,17 @@ def calcular_metricas(t, y, setpoint):
     y_max = np.max(y)
     Mp = float((y_max - sp) / sp * 100) if y_max > sp else 0.0
 
+    if y_max > sp:
+        tp = float(t[np.argmax(y)])
+    else:
+        tp = float('inf')
+
     ess = float(abs(sp - y[-1]))
 
     return {
         'tr': round(tr, 4),
+        'td': round(td, 4),
+        'tp': round(tp, 4),
         'ts': round(ts, 4),
         'Mp': round(Mp, 4),
         'ess': round(ess, 6),

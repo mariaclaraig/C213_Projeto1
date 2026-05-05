@@ -162,6 +162,8 @@ function preencherCamposPid(parametros) {
 function atualizarMetricasControle(resultado) {
     if (!resultado) {
         atualizarTexto("val-tr", "-");
+        atualizarTexto("val-td", "-");
+        atualizarTexto("val-tp", "-");
         atualizarTexto("val-ts", "-");
         atualizarTexto("val-mp", "-");
         atualizarTexto("val-ess", "-");
@@ -169,6 +171,8 @@ function atualizarMetricasControle(resultado) {
     }
 
     atualizarTexto("val-tr", formatarNumero(resultado.tr));
+    atualizarTexto("val-td", formatarNumero(resultado.td));
+    atualizarTexto("val-tp", formatarNumero(resultado.tp));
     atualizarTexto("val-ts", formatarNumero(resultado.ts));
     atualizarTexto("val-mp", formatarNumero(resultado.Mp));
     atualizarTexto("val-ess", formatarNumero(resultado.ess, 6));
@@ -285,7 +289,7 @@ async function executarSintoniaESimulacao() {
         );
 
         atualizarMetricasControle(simulacao);
-        plotarMalhaFechada(simulacao.t, simulacao.y, setpoint, simulacao.tr, simulacao.ts);
+        plotarMalhaFechada(simulacao.t, simulacao.y, setpoint, simulacao.tr, simulacao.ts, simulacao.td, simulacao.tp);
         mostrarSecao("controle");
     } finally {
         if (btnSimular) {
