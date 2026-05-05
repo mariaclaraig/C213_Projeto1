@@ -247,8 +247,8 @@ pytest -v
 
 ## Grupo 06
 
-Projeto desenvolvido para disciplina C213 - Sistemas Embarcados
-Integrantes: Christian Salles Castilho, Maria Clara Ribeiro Ignácio, Samuel Almeida Ralise
+- Projeto desenvolvido para disciplina C213 - Sistemas Embarcados
+- Integrantes: Christian Salles Castilho, Maria Clara Ribeiro Ignácio, Samuel Almeida Ralise
 
 ---
 
