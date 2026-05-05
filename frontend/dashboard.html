@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto Pratico C213 - Sistemas Embarcados</title>
+    <title>Projeto Prático C213 - Sistemas Embarcados</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
+
 <body>
     <div class="dashboard-bg" aria-hidden="true"></div>
     <div class="dashboard-orb orb-top" aria-hidden="true"></div>
@@ -21,13 +23,14 @@
                 <a class="sidebar-back" href="index.html">Voltar</a>
                 <div class="sidebar-logo">C213</div>
                 <div class="sidebar-title">
-                    <h1>Projeto Pratico C213 - Sistemas Embarcados</h1>
+                    <h1>Projeto Prático C213 - Sistemas Embarcados</h1>
                     <p>Identificação de Processos &amp; Sintonia de Controladores PID</p>
                 </div>
             </div>
 
             <nav class="sidebar-nav" aria-label="Navegacao principal">
-                <button class="nav-btn active" type="button" data-section="identificacao" onclick="mostrarSecao('identificacao')">
+                <button class="nav-btn active" type="button" data-section="identificacao"
+                    onclick="mostrarSecao('identificacao')">
                     <span class="nav-icon">01</span>
                     <span class="nav-copy">
                         <strong>Identificação</strong>
@@ -55,7 +58,8 @@
                         <span class="section-kicker">Identificação</span>
                         <h2>Dados de Identificação do Sistema</h2>
                     </div>
-                    <p>Selecione um dataset e visualize a comparação entre a resposta experimental do processo e o modelo FOPDT identificado.</p>
+                    <p>Selecione um dataset e visualize a comparação entre a resposta experimental do processo e o
+                        modelo FOPDT identificado.</p>
                 </div>
 
                 <div class="card upload-card">
@@ -119,7 +123,8 @@
                         <span class="section-kicker">Controle PID</span>
                         <h2>Controle PID</h2>
                     </div>
-                    <p>Selecione a sintonia, ajuste os parâmetros e acompanhe o desempenho da resposta do controle PID.</p>
+                    <p>Selecione a sintonia, ajuste os parâmetros e acompanhe o desempenho da resposta do controle PID.
+                    </p>
                 </div>
 
                 <div class="card controle-card">
@@ -127,7 +132,7 @@
                         <div class="field">
                             <label for="selectMetodo">Seleção de Sintonia</label>
                             <select id="selectMetodo">
-                                <option value="CHR">Método CHR (sem sobresinal)</option>
+                                <option value="CHR">CHR (sem sobresinal)</option>
                                 <option value="CC">Cohen-Coon</option>
                                 <option value="Manual">Manual</option>
                             </select>
@@ -169,22 +174,32 @@
                 </div>
 
                 <div class="metricas-grid">
-                    <div class="metrica-card verde">
+                    <div class="metrica-card cor-tr">
                         <span class="label label-formula">t<sub>r</sub></span>
                         <span class="valor" id="val-tr">-</span>
                         <span class="descricao">Tempo de subida</span>
                     </div>
-                    <div class="metrica-card azul">
+                    <div class="metrica-card cor-ts">
                         <span class="label label-formula">t<sub>s</sub></span>
                         <span class="valor" id="val-ts">-</span>
                         <span class="descricao">Tempo de acomodação</span>
                     </div>
-                    <div class="metrica-card laranja">
+                    <div class="metrica-card cor-td">
+                        <span class="label label-formula">t<sub>d</sub></span>
+                        <span class="valor" id="val-td">-</span>
+                        <span class="descricao">Tempo de atraso</span>
+                    </div>
+                    <div class="metrica-card cor-tp">
+                        <span class="label label-formula">t<sub>p</sub></span>
+                        <span class="valor" id="val-tp">-</span>
+                        <span class="descricao">Tempo de pico</span>
+                    </div>
+                    <div class="metrica-card cor-tp">
                         <span class="label label-formula">mp<sub></sub></span>
                         <span class="valor" id="val-mp">-</span>
                         <span class="descricao">Sobresinal percentual</span>
                     </div>
-                    <div class="metrica-card roxo">
+                    <div class="metrica-card cor-sp">
                         <span class="label label-formula">e<sub>ss</sub></span>
                         <span class="valor" id="val-ess">-</span>
                         <span class="descricao">Erro estacionário</span>
@@ -198,4 +213,5 @@
     <script src="js/charts.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
+
 </html>

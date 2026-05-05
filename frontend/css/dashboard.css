@@ -374,6 +374,11 @@ input[type="number"] {
     transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
+select option {
+    background-color: var(--bg-1);
+    color: var(--text);
+}
+
 select:focus,
 input[type="number"]:focus {
     border-color: rgba(124, 107, 255, 0.8);
@@ -459,7 +464,7 @@ input[readonly] {
 }
 
 .metricas-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .metrica-card {
@@ -522,6 +527,26 @@ input[readonly] {
 
 .metrica-card.roxo::before {
     background: linear-gradient(180deg, #e0d7ff, var(--accent));
+}
+
+.metrica-card.cor-tr::before {
+    background: #ef476f;
+}
+
+.metrica-card.cor-td::before {
+    background: #118ab2;
+}
+
+.metrica-card.cor-tp::before {
+    background: #ff9f1c;
+}
+
+.metrica-card.cor-ts::before {
+    background: #9ba3c7;
+}
+
+.metrica-card.cor-sp::before {
+    background: #ffd166;
 }
 
 @keyframes gradientShift {

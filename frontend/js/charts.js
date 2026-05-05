@@ -60,7 +60,7 @@ function plotarIdentificacao(t, yExp, tModelo, yModelo, unidadeY, grandezaY, nom
     Plotly.newPlot("graficoIdentificacao", traces, layout, plotConfig);
 }
 
-function plotarMalhaFechada(t, y, setpoint, tr, ts) {
+function plotarMalhaFechada(t, y, setpoint, tr, ts, td, tp) {
     const spLine = {
         x: [t[0], t[t.length - 1]],
         y: [setpoint, setpoint],
@@ -76,27 +76,49 @@ function plotarMalhaFechada(t, y, setpoint, tr, ts) {
     };
 
     const yMax = Math.max(setpoint * 1.3, ...y);
-    const shapes = [];
+    const traces = [spLine, resposta];
 
     if (Number.isFinite(tr)) {
-        shapes.push({
-            type: "line",
-            x0: tr,
-            x1: tr,
-            y0: 0,
-            y1: yMax,
-            line: { color: "#ef476f", dash: "dash", width: 1 },
+        traces.push({
+            x: [tr, tr],
+            y: [0, yMax],
+            mode: "lines",
+            name: "Tempo de Subida (tr)",
+            line: { color: "#ef476f", dash: "dash", width: 1.5 },
+            hoverinfo: "x+name"
+        });
+    }
+
+    if (Number.isFinite(td)) {
+        traces.push({
+            x: [td, td],
+            y: [0, yMax],
+            mode: "lines",
+            name: "Tempo de Atraso (td)",
+            line: { color: "#118ab2", dash: "dash", width: 1.5 },
+            hoverinfo: "x+name"
+        });
+    }
+    
+    if (Number.isFinite(tp) && tp < Infinity) {
+        traces.push({
+            x: [tp, tp],
+            y: [0, yMax],
+            mode: "lines",
+            name: "Tempo de Pico (tp)",
+            line: { color: "#ff9f1c", dash: "dash", width: 1.5 },
+            hoverinfo: "x+name"
         });
     }
 
     if (Number.isFinite(ts)) {
-        shapes.push({
-            type: "line",
-            x0: ts,
-            x1: ts,
-            y0: 0,
-            y1: yMax,
-            line: { color: "#ffd166", dash: "dash", width: 1 },
+        traces.push({
+            x: [ts, ts],
+            y: [0, yMax],
+            mode: "lines",
+            name: "Tempo de Acomodação (ts)",
+            line: { color: "#9ba3c7", dash: "dash", width: 1.5 },
+            hoverinfo: "x+name"
         });
     }
 
@@ -105,8 +127,7 @@ function plotarMalhaFechada(t, y, setpoint, tr, ts) {
         title: "Resposta em Malha Fechada",
         xaxis: { ...layoutBase.xaxis, title: "Tempo (s)" },
         yaxis: { ...layoutBase.yaxis, title: "Saída" },
-        shapes,
     };
 
-    Plotly.newPlot("graficoMalhaFechada", [spLine, resposta], layout, plotConfig);
+    Plotly.newPlot("graficoMalhaFechada", traces, layout, plotConfig);
 }
